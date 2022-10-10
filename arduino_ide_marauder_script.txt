@@ -38,7 +38,7 @@ start /wait mshta vbscript:Execute("msgbox ""Close when the CH34 Drivers are ins
 
 echo boardsmanager.additional.urls=https://dl.espressif.com/dl/package_esp32_index.json,https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_dev_index.json>%ARDUINO_PORTABLE_FOLDER%\portable\preferences.txt
 
-start /wait mshta vbscript:Execute("msgbox ""Now the Arduino IDE will open. Tools/Board/Boards Manager.  Install ESP32. edit: Version 2.0.0-rc1  Close IDE, Installation will continue"":close")
+start /wait mshta vbscript:Execute("msgbox ""Now the Arduino IDE will open. Tools/Board/Boards Manager.  Install ESP32 Version 2.0.0-rc1  Close IDE, Installation will continue"":close")
 cd /d  %ARDUINO_PORTABLE_FOLDER%
 start /wait  %ARDUINO_PORTABLE_FOLDER%\Arduino.exe
 start /wait mshta vbscript:Execute("msgbox ""Close when IDE is Closed"":close")
@@ -56,14 +56,14 @@ mkdir "%ARDUINO_PORTABLE_FOLDER%\Install\Libs"
 cd /d "%ARDUINO_PORTABLE_FOLDER%\Install\Libs"
 curl -L --output lv_arduino_3.0.1.zip --url https://github.com/lvgl/lv_arduino/archive/refs/tags/3.0.1.zip
 curl -L --output lv_SwitchLibv1.1.1.zip --url https://github.com/justcallmekoko/SwitchLib/archive/refs/tags/v1.1.1.zip
-curl -L --url https://github.com/bblanchon/ArduinoJson/releases/download/v6.18.2/ArduinoJson-v6.18.2.zip
+curl -L --output ArduinoJson-v6.18.2.zip --url https://github.com/bblanchon/ArduinoJson/releases/download/v6.18.2/ArduinoJson-v6.18.2.zip
 curl -L --output NeoPixel1.10.5.zip --url https://github.com/adafruit/Adafruit_NeoPixel/archive/refs/tags/1.10.5.zip
 curl -L --output NimBLE_1.4.0.zip --url https://github.com/h2zero/NimBLE-Arduino/archive/refs/tags/1.4.0.zip
 curl -L --output JPEGDecoder_1.8.1.zip --url https://github.com/Bodmer/JPEGDecoder/archive/refs/tags/1.8.1.zip
 curl -L --output TFT_eSPI.zip --url https://github.com/justcallmekoko/TFT_eSPI/archive/refs/heads/master.zip
 curl -L --output LinkedListv1.3.3.zip --url https://github.com/ivanseidel/LinkedList/archive/refs/tags/v1.3.3.zip
 
-start /wait mshta vbscript:Execute("msgbox ""Now the Arduino IDE will open. Shetch/Include Library/Add Zip Library.  Do for all zips in %ARDUINO_PORTABLE_FOLDER%\Install\Libs"":close")
+start /wait mshta vbscript:Execute("msgbox ""Now the Arduino IDE will open. Sketch/Include Library/Add Zip Library.  Do for all zips in %ARDUINO_PORTABLE_FOLDER%\Install\Libs"":close")
 start /wait  %ARDUINO_PORTABLE_FOLDER%\Arduino.exe
 start /wait mshta vbscript:Execute("msgbox ""Close when IDE is Closed"":close")
 
