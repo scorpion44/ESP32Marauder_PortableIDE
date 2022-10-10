@@ -1,4 +1,5 @@
-# ESP32Marauder_PortableIDE
+# ESP32Marauder PortableIDE Creator
+
 ESP32 Marauder Portable IDE creation script
 
 Marauder firmware downloader(updated):  Creates a portable copy of Arduino with all the required files, to compile the firmware.
