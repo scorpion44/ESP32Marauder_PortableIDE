@@ -1,0 +1,88 @@
+SET ARDUINO_PORTABLE_FOLDER=c:\Arduino_Portable
+
+SET ESPTOOL_URL=https://github.com/me-no-dev/arduino-esp32fs-plugin/releases/download/1.0/ESP32FS-1.0.zip
+SET ESPTOOL_FILE=ESP32FS-1.0.zip
+
+SET IDE_URL=https://downloads.arduino.cc/arduino-1.8.19-windows.zip
+SET IDE_FILE=arduino-1.8.19-windows.zip
+SET IDE_DEFAULT_FOLDER=arduino-1.8.19
+
+SET CH34_Drivers_URL=https://github.com/justcallmekoko/ESP32Marauder/raw/master/Drivers/CH34x_Install_Windows_v3_4.EXE
+SET CH34_Drivers_FILE=CH34x_Install_Windows_v3_4.EXE
+
+
+mkdir %ARDUINO_PORTABLE_FOLDER%
+mkdir %ARDUINO_PORTABLE_FOLDER%\portable
+mkdir %ARDUINO_PORTABLE_FOLDER%\tools
+mkdir %ARDUINO_PORTABLE_FOLDER%\Install
+
+
+cd /d %ARDUINO_PORTABLE_FOLDER%\Install
+
+curl -L --output %IDE_FILE% --url %IDE_URL%
+curl -L --output %ESPTOOL_FILE% --url %ESPTOOL_URL%
+curl -L --output %CH34_Drivers_FILE% --url %CH34_Drivers_URL%
+curl -L --output fart.zip --url https://downloads.sourceforge.net/project/fart-it/fart-it/1.99b/fart199b_win32.zip
+tar xzf fart.zip
+
+tar zxf %IDE_FILE%
+xcopy /s /e %ARDUINO_PORTABLE_FOLDER%\Install\%IDE_DEFAULT_FOLDER% %ARDUINO_PORTABLE_FOLDER%\
+rmdir /q /s %ARDUINO_PORTABLE_FOLDER%\Install\%IDE_DEFAULT_FOLDER%
+
+tar -zxf %ESPTOOL_FILE%
+move ESP32FS ../tools
+
+start /wait "CH34 Drivers" "%CH34_DRIVERS_FILE%"
+start /wait mshta vbscript:Execute("msgbox ""Close when the CH34 Drivers are installed"":close")
+
+
+echo boardsmanager.additional.urls=https://dl.espressif.com/dl/package_esp32_index.json,https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_dev_index.json>%ARDUINO_PORTABLE_FOLDER%\portable\preferences.txt
+
+start /wait mshta vbscript:Execute("msgbox ""Now the Arduino IDE will open. Tools/Board/Boards Manager.  Install ESP32. edit: Version 2.0.0-rc1  Close IDE, Installation will continue"":close")
+cd /d  %ARDUINO_PORTABLE_FOLDER%
+start /wait  %ARDUINO_PORTABLE_FOLDER%\Arduino.exe
+start /wait mshta vbscript:Execute("msgbox ""Close when IDE is Closed"":close")
+
+fart "%ARDUINO_PORTABLE_FOLDER%\portable\packages\esp32\hardware\esp32\2.0.0-rc1\platform.txt" "build.extra_flags.esp32=-DARDUINO_SERIAL_PORT=0" "build.extra_flags.esp32=-DARDUINO_SERIAL_PORT=0 -w"
+
+SET Find1=compiler.c.elf.libs.esp32=-lmbedtls -lefuse -lapp_update -lbootloader_support -lesp_ipc -lspi_flash -lnvs_flash -lpthread -lesp_gdbstub -lespcoredump -lesp_phy -lesp_system -lesp_rom -lhal -lvfs -lesp_eth -ltcpip_adapter -lesp_netif -lesp_event -lwpa_supplicant -lesp_wifi -llwip -llog -lheap -lsoc -lesp_hw_support -lesp_pm -lesp_ringbuf -ldriver -lxtensa -lperfmon -lesp32 -lesp_common -lesp_timer -lfreertos -lnewlib -lcxx -lapp_trace -lasio -lbt -lcbor -lunity -lcmock -lcoap -lconsole -lnghttp -lesp-tls -lesp_adc_cal -lesp_hid -ltcp_transport -lesp_http_client -lesp_http_server -lesp_https_ota -lesp_lcd -lprotobuf-c -lprotocomm -lmdns -lesp_local_ctrl -lsdmmc -lesp_serial_slave_link -lesp_websocket_client -lexpat -lwear_levelling -lfatfs -lfreemodbus -ljsmn -ljson -llibsodium -lmqtt -lopenssl -lspiffs -lulp -lwifi_provisioning -lbutton -ljson_parser -ljson_generator -lesp_schedule -lesp_rainmaker -lqrcode -lws2812_led -lesp-dsp -lesp-face -lesp32-camera -lesp_littlefs -lfb_gfx -lasio -lcbor -lcmock -lunity -lcoap -lesp_hid -lesp_lcd -lesp_local_ctrl -lesp_websocket_client -lexpat -lfreemodbus -ljsmn -llibsodium -lesp_adc_cal -lfatfs -lwear_levelling -lopenssl -lspiffs -lesp_rainmaker -lmqtt -lwifi_provisioning -lprotocomm -lbt -lbtdm_app -lprotobuf-c -lmdns -lconsole -ljson -ljson_parser -ljson_generator -lesp_schedule -lqrcode -lpe -lfd -lfr -ldetection_cat_face -ldetection -ldl -lmbedtls -lefuse -lapp_update -lbootloader_support -lesp_ipc -lspi_flash -lnvs_flash -lpthread -lesp_gdbstub -lespcoredump -lesp_phy -lesp_system -lesp_rom -lhal -lvfs -lesp_eth -ltcpip_adapter -lesp_netif -lesp_event -lwpa_supplicant -lesp_wifi -llwip -llog -lheap -lsoc -lesp_hw_support -lesp_pm -lesp_ringbuf -ldriver -lxtensa -lperfmon -lesp32 -lesp_common -lesp_timer -lfreertos -lnewlib -lcxx -lapp_trace -lnghttp -lesp-tls -ltcp_transport -lesp_http_client -lesp_http_server -lesp_https_ota -lsdmmc -lesp_serial_slave_link -lulp -lmbedtls -lmbedcrypto -lmbedx509 -lcoexist -lcore -lespnow -lmesh -lnet80211 -lpp -lsmartconfig -lwapi -lmbedtls -lefuse -lapp_update -lbootloader_support -lesp_ipc -lspi_flash -lnvs_flash -lpthread -lesp_gdbstub -lespcoredump -lesp_phy -lesp_system -lesp_rom -lhal -lvfs -lesp_eth -ltcpip_adapter -lesp_netif -lesp_event -lwpa_supplicant -lesp_wifi -llwip -llog -lheap -lsoc -lesp_hw_support -lesp_pm -lesp_ringbuf -ldriver -lxtensa -lperfmon -lesp32 -lesp_common -lesp_timer -lfreertos -lnewlib -lcxx -lapp_trace -lnghttp -lesp-tls -ltcp_transport -lesp_http_client -lesp_http_server -lesp_https_ota -lsdmmc -lesp_serial_slave_link -lulp -lmbedtls -lmbedcrypto -lmbedx509 -lcoexist -lcore -lespnow -lmesh -lnet80211 -lpp -lsmartconfig -lwapi -lmbedtls -lefuse -lapp_update -lbootloader_support -lesp_ipc -lspi_flash -lnvs_flash -lpthread -lesp_gdbstub -lespcoredump -lesp_phy -lesp_system -lesp_rom -lhal -lvfs -lesp_eth -ltcpip_adapter -lesp_netif -lesp_event -lwpa_supplicant -lesp_wifi -llwip -llog -lheap -lsoc -lesp_hw_support -lesp_pm -lesp_ringbuf -ldriver -lxtensa -lperfmon -lesp32 -lesp_common -lesp_timer -lfreertos -lnewlib -lcxx -lapp_trace -lnghttp -lesp-tls -ltcp_transport -lesp_http_client -lesp_http_server -lesp_https_ota -lsdmmc -lesp_serial_slave_link -lulp -lmbedtls -lmbedcrypto -lmbedx509 -lcoexist -lcore -lespnow -lmesh -lnet80211 -lpp -lsmartconfig -lwapi -lmbedtls -lefuse -lapp_update -lbootloader_support -lesp_ipc -lspi_flash -lnvs_flash -lpthread -lesp_gdbstub -lespcoredump -lesp_phy -lesp_system -lesp_rom -lhal -lvfs -lesp_eth -ltcpip_adapter -lesp_netif -lesp_event -lwpa_supplicant -lesp_wifi -llwip -llog -lheap -lsoc -lesp_hw_support -lesp_pm -lesp_ringbuf -ldriver -lxtensa -lperfmon -lesp32 -lesp_common -lesp_timer -lfreertos -lnewlib -lcxx -lapp_trace -lnghttp -lesp-tls -ltcp_transport -lesp_http_client -lesp_http_server -lesp_https_ota -lsdmmc -lesp_serial_slave_link -lulp -lmbedtls -lmbedcrypto -lmbedx509 -lcoexist -lcore -lespnow -lmesh -lnet80211 -lpp -lsmartconfig -lwapi -lmbedtls -lefuse -lapp_update -lbootloader_support -lesp_ipc -lspi_flash -lnvs_flash -lpthread -lesp_gdbstub -lespcoredump -lesp_phy -lesp_system -lesp_rom -lhal -lvfs -lesp_eth -ltcpip_adapter -lesp_netif -lesp_event -lwpa_supplicant -lesp_wifi -llwip -llog -lheap -lsoc -lesp_hw_support -lesp_pm -lesp_ringbuf -ldriver -lxtensa -lperfmon -lesp32 -lesp_common -lesp_timer -lfreertos -lnewlib -lcxx -lapp_trace -lnghttp -lesp-tls -ltcp_transport -lesp_http_client -lesp_http_server -lesp_https_ota -lsdmmc -lesp_serial_slave_link -lulp -lmbedtls -lmbedcrypto -lmbedx509 -lcoexist -lcore -lespnow -lmesh -lnet80211 -lpp -lsmartconfig -lwapi -lphy -lesp_phy -lphy -lesp_phy -lphy -lrtc -lxt_hal -lm -lnewlib -lstdc++ -lpthread -lgcc -lcxx -lapp_trace -lgcov -lapp_trace -lgcov -lc 
+
+SET Replace2=compiler.c.elf.libs.esp32=-lmbedtls -lefuse -lapp_update -lbootloader_support -lesp_ipc -lspi_flash -lnvs_flash -lpthread -lesp_gdbstub -lespcoredump -lesp_phy -lesp_system -lesp_rom -lhal -lvfs -lesp_eth -ltcpip_adapter -lesp_netif -lesp_event -lwpa_supplicant -lesp_wifi -llwip -llog -lheap -lsoc -lesp_hw_support -lesp_pm -lesp_ringbuf -ldriver -lxtensa -lperfmon -lesp32 -lesp_common -lesp_timer -lfreertos -lnewlib -lcxx -lapp_trace -lasio -lbt -lcbor -lunity -lcmock -lcoap -lconsole -lnghttp -lesp-tls -lesp_adc_cal -lesp_hid -ltcp_transport -lesp_http_client -lesp_http_server -lesp_https_ota -lesp_lcd -lprotobuf-c -lprotocomm -lmdns -lesp_local_ctrl -lsdmmc -lesp_serial_slave_link -lesp_websocket_client -lexpat -lwear_levelling -lfatfs -lfreemodbus -ljsmn -ljson -llibsodium -lmqtt -lopenssl -lspiffs -lulp -lwifi_provisioning -lbutton -ljson_parser -ljson_generator -lesp_schedule -lesp_rainmaker -lqrcode -lws2812_led -lesp-dsp -lesp-face -lesp32-camera -lesp_littlefs -lfb_gfx -lasio -lcbor -lcmock -lunity -lcoap -lesp_hid -lesp_lcd -lesp_local_ctrl -lesp_websocket_client -lexpat -lfreemodbus -ljsmn -llibsodium -lesp_adc_cal -lfatfs -lwear_levelling -lopenssl -lspiffs -lesp_rainmaker -lmqtt -lwifi_provisioning -lprotocomm -lbt -lbtdm_app -lprotobuf-c -lmdns -lconsole -ljson -ljson_parser -ljson_generator -lesp_schedule -lqrcode -lpe -lfd -lfr -ldetection_cat_face -ldetection -ldl -lmbedtls -lefuse -lapp_update -lbootloader_support -lesp_ipc -lspi_flash -lnvs_flash -lpthread -lesp_gdbstub -lespcoredump -lesp_phy -lesp_system -lesp_rom -lhal -lvfs -lesp_eth -ltcpip_adapter -lesp_netif -lesp_event -lwpa_supplicant -lesp_wifi -llwip -llog -lheap -lsoc -lesp_hw_support -lesp_pm -lesp_ringbuf -ldriver -lxtensa -lperfmon -lesp32 -lesp_common -lesp_timer -lfreertos -lnewlib -lcxx -lapp_trace -lnghttp -lesp-tls -ltcp_transport -lesp_http_client -lesp_http_server -lesp_https_ota -lsdmmc -lesp_serial_slave_link -lulp -lmbedtls -lmbedcrypto -lmbedx509 -lcoexist -lcore -lespnow -lmesh -lnet80211 -lpp -lsmartconfig -lwapi -lmbedtls -lefuse -lapp_update -lbootloader_support -lesp_ipc -lspi_flash -lnvs_flash -lpthread -lesp_gdbstub -lespcoredump -lesp_phy -lesp_system -lesp_rom -lhal -lvfs -lesp_eth -ltcpip_adapter -lesp_netif -lesp_event -lwpa_supplicant -lesp_wifi -llwip -llog -lheap -lsoc -lesp_hw_support -lesp_pm -lesp_ringbuf -ldriver -lxtensa -lperfmon -lesp32 -lesp_common -lesp_timer -lfreertos -lnewlib -lcxx -lapp_trace -lnghttp -lesp-tls -ltcp_transport -lesp_http_client -lesp_http_server -lesp_https_ota -lsdmmc -lesp_serial_slave_link -lulp -lmbedtls -lmbedcrypto -lmbedx509 -lcoexist -lcore -lespnow -lmesh -lnet80211 -lpp -lsmartconfig -lwapi -lmbedtls -lefuse -lapp_update -lbootloader_support -lesp_ipc -lspi_flash -lnvs_flash -lpthread -lesp_gdbstub -lespcoredump -lesp_phy -lesp_system -lesp_rom -lhal -lvfs -lesp_eth -ltcpip_adapter -lesp_netif -lesp_event -lwpa_supplicant -lesp_wifi -llwip -llog -lheap -lsoc -lesp_hw_support -lesp_pm -lesp_ringbuf -ldriver -lxtensa -lperfmon -lesp32 -lesp_common -lesp_timer -lfreertos -lnewlib -lcxx -lapp_trace -lnghttp -lesp-tls -ltcp_transport -lesp_http_client -lesp_http_server -lesp_https_ota -lsdmmc -lesp_serial_slave_link -lulp -lmbedtls -lmbedcrypto -lmbedx509 -lcoexist -lcore -lespnow -lmesh -lnet80211 -lpp -lsmartconfig -lwapi -lmbedtls -lefuse -lapp_update -lbootloader_support -lesp_ipc -lspi_flash -lnvs_flash -lpthread -lesp_gdbstub -lespcoredump -lesp_phy -lesp_system -lesp_rom -lhal -lvfs -lesp_eth -ltcpip_adapter -lesp_netif -lesp_event -lwpa_supplicant -lesp_wifi -llwip -llog -lheap -lsoc -lesp_hw_support -lesp_pm -lesp_ringbuf -ldriver -lxtensa -lperfmon -lesp32 -lesp_common -lesp_timer -lfreertos -lnewlib -lcxx -lapp_trace -lnghttp -lesp-tls -ltcp_transport -lesp_http_client -lesp_http_server -lesp_https_ota -lsdmmc -lesp_serial_slave_link -lulp -lmbedtls -lmbedcrypto -lmbedx509 -lcoexist -lcore -lespnow -lmesh -lnet80211 -lpp -lsmartconfig -lwapi -lmbedtls -lefuse -lapp_update -lbootloader_support -lesp_ipc -lspi_flash -lnvs_flash -lpthread -lesp_gdbstub -lespcoredump -lesp_phy -lesp_system -lesp_rom -lhal -lvfs -lesp_eth -ltcpip_adapter -lesp_netif -lesp_event -lwpa_supplicant -lesp_wifi -llwip -llog -lheap -lsoc -lesp_hw_support -lesp_pm -lesp_ringbuf -ldriver -lxtensa -lperfmon -lesp32 -lesp_common -lesp_timer -lfreertos -lnewlib -lcxx -lapp_trace -lnghttp -lesp-tls -ltcp_transport -lesp_http_client -lesp_http_server -lesp_https_ota -lsdmmc -lesp_serial_slave_link -lulp -lmbedtls -lmbedcrypto -lmbedx509 -lcoexist -lcore -lespnow -lmesh -lnet80211 -lpp -lsmartconfig -lwapi -lphy -lesp_phy -lphy -lesp_phy -lphy -lrtc -lxt_hal -lm -lnewlib -lstdc++ -lpthread -lgcc -lcxx -lapp_trace -lgcov -lapp_trace -lgcov -lc -zmuldefs 
+
+fart "%ARDUINO_PORTABLE_FOLDER%\portable\packages\esp32\hardware\esp32\2.0.0-rc1\platform.txt" "%Find1%" "XXXXXXXXXX"
+fart "%ARDUINO_PORTABLE_FOLDER%\portable\packages\esp32\hardware\esp32\2.0.0-rc1\platform.txt" "XXXXXXXXXX" "%Replace1%"
+
+mkdir "%ARDUINO_PORTABLE_FOLDER%\Install\Libs"
+cd /d "%ARDUINO_PORTABLE_FOLDER%\Install\Libs"
+curl -L --output lv_arduino_3.0.1.zip --url https://github.com/lvgl/lv_arduino/archive/refs/tags/3.0.1.zip
+curl -L --output lv_SwitchLibv1.1.1.zip --url https://github.com/justcallmekoko/SwitchLib/archive/refs/tags/v1.1.1.zip
+curl -L --url https://github.com/bblanchon/ArduinoJson/releases/download/v6.18.2/ArduinoJson-v6.18.2.zip
+curl -L --output NeoPixel1.10.5.zip --url https://github.com/adafruit/Adafruit_NeoPixel/archive/refs/tags/1.10.5.zip
+curl -L --output NimBLE_1.4.0.zip --url https://github.com/h2zero/NimBLE-Arduino/archive/refs/tags/1.4.0.zip
+curl -L --output JPEGDecoder_1.8.1.zip --url https://github.com/Bodmer/JPEGDecoder/archive/refs/tags/1.8.1.zip
+curl -L --output TFT_eSPI.zip --url https://github.com/justcallmekoko/TFT_eSPI/archive/refs/heads/master.zip
+curl -L --output LinkedListv1.3.3.zip --url https://github.com/ivanseidel/LinkedList/archive/refs/tags/v1.3.3.zip
+
+start /wait mshta vbscript:Execute("msgbox ""Now the Arduino IDE will open. Shetch/Include Library/Add Zip Library.  Do for all zips in %ARDUINO_PORTABLE_FOLDER%\Install\Libs"":close")
+start /wait  %ARDUINO_PORTABLE_FOLDER%\Arduino.exe
+start /wait mshta vbscript:Execute("msgbox ""Close when IDE is Closed"":close")
+
+curl -L --output User_Setup.h --url https://github.com/justcallmekoko/ESP32Marauder/blob/master/User_Setup.h
+copy /y User_Setup.h %ARDUINO_PORTABLE_FOLDER%\portable\sketchbook\libraries\TFT_eSPI-master
+
+
+
+cd /d %ARDUINO_PORTABLE_FOLDER%\Install
+
+curl -L --output ESP32Marauder.zip --url https://github.com/justcallmekoko/ESP32Marauder/archive/refs/tags/v0.9.15.zip
+
+copy /y ESP32Marauder.zip %ARDUINO_PORTABLE_FOLDER%\portable\sketchbook\
+cd /d %ARDUINO_PORTABLE_FOLDER%\portable\sketchbook\
+tar zxf ESP32Marauder.zip
+
+
+start /wait mshta vbscript:Execute("msgbox ""Complete.  Now open the files in %ARDUINO_PORTABLE_FOLDER%\portable\sketchbook\ESP32Marauder-0.9.15\esp32_marauder"":close")
+
+
+
+
